@@ -20,18 +20,18 @@ export async function runShot(shot, query, app) {
   const reset = () => P.forEach((p) => { p.zoom = 1; p.ox = 0; p.oy = 0; p.flip = false; });
   reset();
   if (state.layout === 'grid') {
-    P[0].photo = boulevard; P[0].zoom = 1.1;
-    P[1].photo = pier; P[1].zoom = 1.2; P[1].oy = -0.05;
-    P[2].photo = pier; P[2].zoom = 1.5; P[2].ox = 0.1;
-    P[3].photo = boulevard; P[3].zoom = 1.6; P[3].ox = 0.12; P[3].oy = 0.18;
+    P[0].photo = boulevard; P[0].zoom = 1.1; P[0].oy = 0.5;
+    P[1].photo = pier; P[1].zoom = 1.2; P[1].oy = 0.5;
+    P[2].photo = pier; P[2].zoom = 1.5; P[2].ox = 0.2; P[2].oy = 0;
+    P[3].photo = boulevard; P[3].zoom = 1.6; P[3].ox = 0.45; P[3].oy = -0.25;
   } else if (state.layout === 'columns') {
-    P[0].photo = pier; P[0].zoom = 1.15;
-    P[1].photo = boulevard; P[1].zoom = 1.1; P[1].oy = -0.03;
-    P[2].photo = boulevard; P[2].zoom = 1.7; P[2].ox = -0.1; P[2].oy = 0.15;
+    P[0].photo = pier; P[0].zoom = 1.3; P[0].oy = 0.5;
+    P[1].photo = boulevard; P[1].zoom = 1.1; P[1].oy = 0.55;
+    P[2].photo = boulevard; P[2].zoom = 1.7; P[2].ox = 0.5; P[2].oy = -0.2;
   } else {
-    P[0].photo = boulevard; P[0].oy = -0.04;
-    P[1].photo = pier; P[1].zoom = 1.15;
-    P[2].photo = boulevard; P[2].zoom = 1.6; P[2].ox = 0.12; P[2].oy = 0.18;
+    P[0].photo = boulevard; P[0].oy = 0.55;
+    P[1].photo = pier; P[1].zoom = 1.15; P[1].oy = 0.55;
+    P[2].photo = boulevard; P[2].zoom = 1.6; P[2].ox = 0.25; P[2].oy = -0.4;
   }
 
   if (shot === 'cover') document.body.classList.add('shot-cover');

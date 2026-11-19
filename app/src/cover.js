@@ -84,8 +84,12 @@ function drawPanelPhoto(ctx, photo, rect, crop) {
     const scale = Math.max(w / iw, h / ih) * zoom;
     const dw = iw * scale;
     const dh = ih * scale;
-    const cx = x + w / 2 + (crop?.ox ?? 0) * w;
-    const cy = y + h / 2 + (crop?.oy ?? 0) * h;
+    // ox/oy are fractions (-1..1) of the maximum pan in each direction, so the
+    // whole photo stays reachable no matter how far it is zoomed in.
+    const maxOx = Math.max(0, (dw - w) / 2);
+    const maxOy = Math.max(0, (dh - h) / 2);
+    const cx = x + w / 2 + (crop?.ox ?? 0) * maxOx;
+    const cy = y + h / 2 + (crop?.oy ?? 0) * maxOy;
     ctx.translate(cx, cy);
     if (crop?.flip) ctx.scale(-1, 1);
     ctx.drawImage(photo, -dw / 2, -dh / 2, dw, dh);
@@ -193,16 +197,20 @@ export function renderCover(ctx, state, W, H) {
   ctx.translate(-W / 2, -H * 0.94);
 
   if (subtitle) {
-    const subSize = fitFont(ctx, subtitle, '"Pacifico", cursive', 400, W * 0.058, W * 0.86);
+    const subSize = fitFont(ctx, subtitle, '"Pacifico", cursive', 400, W * 0.042, W * 0.86);
     ctx.font = `${subSize}px "Pacifico", cursive`;
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = Math.max(2, subSize * 0.09);
+    ctx.strokeStyle = 'rgba(13, 10, 18, 0.85)';
+    ctx.strokeText(subtitle, W / 2, H * 0.755);
     ctx.fillStyle = '#ff7ad9';
     ctx.shadowColor = '#ff2ea6';
     ctx.shadowBlur = subSize * 0.55;
-    ctx.fillText(subtitle, W / 2, H * 0.865);
+    ctx.fillText(subtitle, W / 2, H * 0.755);
     ctx.shadowBlur = 0;
   }
   if (title) {
-    const size = fitFont(ctx, title, '"Anton", sans-serif', 400, W * 0.115, W * 0.94);
+    const size = fitFont(ctx, title, '"Anton", sans-serif', 400, W * 0.085, W * 0.94);
     ctx.font = `${size}px "Anton", sans-serif`;
     ctx.lineJoin = 'round';
     ctx.lineWidth = Math.max(3, size * 0.16);
@@ -210,18 +218,18 @@ export function renderCover(ctx, state, W, H) {
     ctx.shadowColor = '#ff2ea6';
     ctx.shadowBlur = size * 0.18;
     ctx.shadowOffsetY = size * 0.04;
-    ctx.strokeText(title, W / 2, H * 0.955);
+    ctx.strokeText(title, W / 2, H * 0.905);
     ctx.shadowBlur = 0;
     ctx.shadowOffsetY = 0;
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(title, W / 2, H * 0.955);
+    ctx.fillText(title, W / 2, H * 0.905);
   }
   if (tagline) {
     const tagSize = Math.max(10, W * 0.021);
     ctx.font = `${tagSize}px "Anton", sans-serif`;
     try { ctx.letterSpacing = `${Math.round(tagSize * 0.35)}px`; } catch { /* older canvas */ }
     ctx.fillStyle = '#ffe9a8';
-    ctx.fillText(tagline, W / 2, H * 0.988);
+    ctx.fillText(tagline, W / 2, H * 0.972);
     try { ctx.letterSpacing = '0px'; } catch { /* older canvas */ }
   }
   ctx.restore();

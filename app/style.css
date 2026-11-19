@@ -21,7 +21,7 @@ body {
 }
 .top {
   display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: baseline; justify-content: space-between;
-  padding: 18px 28px 12px; border-bottom: 1px solid var(--line);
+  padding: 12px 28px 10px; border-bottom: 1px solid var(--line);
 }
 .top h1 {
   margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 34px; letter-spacing: 1px;
@@ -29,7 +29,7 @@ body {
 }
 .top .tag { margin: 2px 0 0; color: var(--neon); font-family: 'Pacifico', cursive; font-size: 17px; }
 .top .how { margin: 0; color: var(--muted); font-size: 13px; }
-.app { display: flex; gap: 28px; padding: 24px 28px 32px; align-items: flex-start; }
+.app { display: flex; gap: 28px; padding: 16px 28px 24px; align-items: flex-start; }
 .preview-col { flex: 1 1 auto; min-width: 0; }
 #cover {
   display: block; width: 100%; height: auto; max-height: calc(100vh - 190px);
@@ -38,10 +38,10 @@ body {
 }
 #cover:active { cursor: grabbing; }
 .hint { color: var(--muted); font-size: 13px; margin: 12px 2px 0; }
-.controls { flex: 0 0 320px; display: flex; flex-direction: column; gap: 18px; }
+.controls { flex: 0 0 320px; display: flex; flex-direction: column; gap: 12px; }
 .group {
-  background: var(--plum-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 10px;
+  background: var(--plum-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 8px;
 }
 .group h2 {
   margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 15px; letter-spacing: 2px;

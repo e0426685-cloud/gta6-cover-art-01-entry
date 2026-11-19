@@ -169,10 +169,18 @@ canvas.addEventListener('pointerdown', (e) => {
 canvas.addEventListener('pointermove', (e) => {
   if (!drag) return;
   const p = state.panels[selected];
-  p.ox = drag.ox + ((e.clientX - drag.x) / drag.rect.width) * (canvas.width / 1080) * 1.4;
-  p.oy = drag.oy + ((e.clientY - drag.y) / drag.rect.height) * (canvas.height / 1080) * 1.4;
-  p.ox = Math.max(-0.6, Math.min(0.6, p.ox));
-  p.oy = Math.max(-0.6, Math.min(0.6, p.oy));
+  if (!p.photo) return;
+  const rects = layoutRects(state.layout, canvas.width, canvas.height);
+  const rc = rects[selected];
+  const iw = p.photo.naturalWidth;
+  const ih = p.photo.naturalHeight;
+  const scale = Math.max(rc.w / iw, rc.h / ih) * p.zoom;
+  const maxOx = Math.max(1, (iw * scale - rc.w) / 2);
+  const maxOy = Math.max(1, (ih * scale - rc.h) / 2);
+  const dx = ((e.clientX - drag.x) / drag.rect.width) * canvas.width;
+  const dy = ((e.clientY - drag.y) / drag.rect.height) * canvas.height;
+  p.ox = Math.max(-1, Math.min(1, drag.ox + dx / maxOx));
+  p.oy = Math.max(-1, Math.min(1, drag.oy + dy / maxOy));
   redraw();
 });
 canvas.addEventListener('pointerup', () => { drag = null; });
@@ -233,18 +241,19 @@ async function boot() {
   // Defaults: hero = boulevard, bottom-left = pier, bottom-right = boulevard (car close-up).
   if (photos[0]) {
     state.panels[0].photo = photos[0].img;
-    state.panels[0].oy = -0.04;
+    state.panels[0].oy = 0.55; // pull the wide hero crop up to the face + sunset
     state.panels[2].photo = photos[0].img;
     state.panels[2].zoom = 1.6;
-    state.panels[2].ox = 0.12;
-    state.panels[2].oy = 0.18;
+    state.panels[2].ox = 0.25;
+    state.panels[2].oy = -0.4;
     state.panels[3].photo = photos[0].img;
     state.panels[3].zoom = 1.4;
-    state.panels[3].oy = 0.1;
+    state.panels[3].oy = -0.2;
   }
   if (photos[1]) {
     state.panels[1].photo = photos[1].img;
     state.panels[1].zoom = 1.15;
+    state.panels[1].oy = 0.55; // face + hat, not shoulders
   }
   const shot = new URLSearchParams(location.search).get('shot');
   await loadFonts();
