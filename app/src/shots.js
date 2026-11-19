@@ -1,7 +1,43 @@
-// Fixed scenes for screenshots: ?shot=editor shows the page with a sample photo; ?shot=cover shows the cover alone.
-// `photo` picks the sample (samples/<photo>.jpg) and `caption` the words. window.__shotReady is set once painted.
-export async function runShot(shot, query, load) {
+// Fixed scenes for screenshots: ?shot=editor shows the editor with sample
+// photos loaded; ?shot=cover shows the finished cover alone at the size the
+// export would be (the app's own drawing, at screenshot size).
+// window.__shotReady is set once the fonts are in and the cover is painted.
+export async function runShot(shot, query, app) {
+  const { state, photos, redraw, SIZES } = app;
+  const pick = (name) => photos.find((p) => p.url.includes(name))?.img || null;
+  const boulevard = pick('boulevard');
+  const pier = pick('pier');
+
+  if (query.get('layout')) state.layout = query.get('layout');
+  if (query.get('title') !== null) state.title = query.get('title');
+  if (query.get('subtitle') !== null) state.subtitle = query.get('subtitle');
+  if (query.get('tagline') !== null) state.tagline = query.get('tagline');
+  if (query.get('size') && SIZES[query.get('size')]) state.size = query.get('size');
+
+  // Panel photos per scene: hero = boulevard sunset, strip mixes pier + a
+  // close crop of the boulevard car; grid/columns alternate the two samples.
+  const P = state.panels;
+  const reset = () => P.forEach((p) => { p.zoom = 1; p.ox = 0; p.oy = 0; p.flip = false; });
+  reset();
+  if (state.layout === 'grid') {
+    P[0].photo = boulevard; P[0].zoom = 1.1;
+    P[1].photo = pier; P[1].zoom = 1.2; P[1].oy = -0.05;
+    P[2].photo = pier; P[2].zoom = 1.5; P[2].ox = 0.1;
+    P[3].photo = boulevard; P[3].zoom = 1.6; P[3].ox = 0.12; P[3].oy = 0.18;
+  } else if (state.layout === 'columns') {
+    P[0].photo = pier; P[0].zoom = 1.15;
+    P[1].photo = boulevard; P[1].zoom = 1.1; P[1].oy = -0.03;
+    P[2].photo = boulevard; P[2].zoom = 1.7; P[2].ox = -0.1; P[2].oy = 0.15;
+  } else {
+    P[0].photo = boulevard; P[0].oy = -0.04;
+    P[1].photo = pier; P[1].zoom = 1.15;
+    P[2].photo = boulevard; P[2].zoom = 1.6; P[2].ox = 0.12; P[2].oy = 0.18;
+  }
+
   if (shot === 'cover') document.body.classList.add('shot-cover');
-  await load(`samples/${query.get('photo') ?? 'pier'}.jpg`, query.get('caption') ?? 'Sunset Heist');
-  requestAnimationFrame(() => requestAnimationFrame(() => { window.__shotReady = true; }));
+  redraw();
+  await document.fonts.ready;
+  redraw(); // repaint once the bundled fonts are actually in
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  window.__shotReady = true;
 }

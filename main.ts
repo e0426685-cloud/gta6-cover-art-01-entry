@@ -2,11 +2,18 @@
 // static files a desktop browser loads offline (app/index.html and its ES modules, no library and no network
 // request), and the program hands it in. It copies app/ and screenshots/ from beside this file to /output and writes
 // /output/dossier.json, the summary the judge reads, with the vendored make.fun library. Only the plumbing, not the
-// cover art the bounty asks for: Cover Snap, a plain one-photo square cover with a sunset tint and a bold caption,
-// exported as a 1080 x 1080 PNG. Its two sample photos (app/samples/) were made for make.fun with an image model and
-// are free to use. Build your own GTA-style cover maker in its place, put your 3 or 4 PNG or JPEG screenshots in
-// screenshots/ (the first by name is the cover) and run it.
+// cover art the bounty asks for: Vice Cover Studio, a multi-panel GTA 6-style
+// cover maker — comic-grid layouts, per-panel photo crop/position, sunset/neon
+// grade, Anton block-cap title + Pacifico neon script, PNG export in
+// 1080x1080, 1080x1350 and 1920x1080. Its two sample photos (app/samples/)
+// were made for make.fun with an image model and are free to use. Put your
+// 3 or 4 PNG or JPEG screenshots in screenshots/ (the first by name is the
+// cover) and run it.
 //
+// The app this hands in is Vice Cover Studio (built in the recorded session):
+// a multi-panel GTA 6-style cover maker — canvas renderer in app/src/cover.js,
+// editor UI in app/index.html + app/src/main.js, OFL fonts under app/fonts,
+// sample photos under app/samples, 4 real screenshots in screenshots/.
 // Serve it locally with `node serve.ts`, then open http://localhost:8080.
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts

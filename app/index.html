@@ -3,20 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Vice Cover Studio — make your own GTA 6-style cover art</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+<header class="top">
+  <div>
+    <h1>Vice Cover Studio</h1>
+    <p class="tag">Your photo. Your story. A Vice City cover.</p>
+  </div>
+  <p class="how">1 · Add photos &nbsp; 2 · Pick a layout &nbsp; 3 · Write the caption &nbsp; 4 · Export PNG</p>
+</header>
 <main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+  <section class="preview-col">
+    <canvas id="cover" width="1920" height="1080" aria-label="Cover preview — click a panel to select it, drag to move the photo"></canvas>
+    <p class="hint">Click a panel to select it, then drag the photo inside it to reposition. Everything stays on your device — photos are never uploaded.</p>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+  <section class="controls">
+    <div class="group">
+      <h2>Photos</h2>
+      <label class="file-label">Add your photos
+        <input id="photo" type="file" accept="image/*" multiple>
+      </label>
+      <div class="samples">
+        <span>Or use a sample:</span>
+        <button id="sample-boulevard" type="button">Boulevard sunset</button>
+        <button id="sample-pier" type="button">Pier fishing</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Layout</h2>
+      <div class="row" role="group" aria-label="Panel layout">
+        <button class="layout-btn" type="button" data-layout="hero">Hero + strip</button>
+        <button class="layout-btn" type="button" data-layout="grid">Comic grid</button>
+        <button class="layout-btn" type="button" data-layout="columns">Triptych</button>
+      </div>
+    </div>
+
+    <div class="group" id="panels">
+      <h2>Selected panel</h2>
+      <div class="row" role="group" aria-label="Select panel">
+        <button class="panel-btn" type="button">Panel 1</button>
+        <button class="panel-btn" type="button">Panel 2</button>
+        <button class="panel-btn" type="button">Panel 3</button>
+        <button class="panel-btn" type="button">Panel 4</button>
+      </div>
+      <label>Photo in this panel
+        <select id="panel-photo"></select>
+      </label>
+      <label>Zoom <span id="zoom-val">100%</span>
+        <input id="zoom" type="range" min="1" max="2.5" step="0.05" value="1">
+      </label>
+      <div class="row">
+        <button id="flip" type="button">Flip photo</button>
+        <button id="centre" type="button">Reset crop</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Caption</h2>
+      <label>Title (big block letters)
+        <input id="title" type="text" maxlength="24" value="Sunset Heist">
+      </label>
+      <label>Neon script line
+        <input id="subtitle" type="text" maxlength="40" value="Welcome to Vice City">
+      </label>
+      <label>Tagline
+        <input id="tagline" type="text" maxlength="40" value="A Vice City story">
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>Export size</h2>
+      <div class="row" role="group" aria-label="Export size">
+        <button class="size-btn" type="button" data-size="square">1080 × 1080</button>
+        <button class="size-btn" type="button" data-size="portrait">1080 × 1350</button>
+        <button class="size-btn" type="button" data-size="wide">1920 × 1080</button>
+      </div>
+      <button id="export" type="button" class="export">Export PNG</button>
+      <p id="status" role="status"></p>
+    </div>
+
+    <p class="fine">Cover lettering: Anton + Pacifico, both under the SIL Open Font License — see app/fonts/OFL.txt. Sample photos were made with an image model for this project. No Rockstar artwork, logo or font is used.</p>
+  </section>
 </main>
 <script type="module" src="./src/main.js"></script>
 </body>
